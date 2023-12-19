@@ -1,28 +1,44 @@
 // read from the diagrams submodule, parse the metadata yaml file, and create diagrams and a single JSON file in the public/diagrams folder
 
-import { readdirSync, statSync, readFileSync, writeFileSync } from "fs";
-import { safeLoad } from "js-yaml";
+import {
+  mkdirSync,
+  readdirSync,
+  statSync,
+  readFileSync,
+  writeFileSync,
+  copyFileSync,
+} from "fs";
+import { load } from "js-yaml";
 import { join } from "path";
 
 const diagramsPath = "diagrams";
-const publicPath = "public/diagrams";
+const distPath = "public/diagrams";
+
+// recursively create dist path if it doesn't exist
+if (!statSync(distPath, { throwIfNoEntry: false })) {
+  mkdirSync(distPath, { recursive: true });
+}
 
 const diagrams = readdirSync(diagramsPath)
   .filter((file) => {
     return statSync(join(diagramsPath, file)).isDirectory();
   })
   .map((dir) => {
-    const metadata = safeLoad(
+    const metadata = load(
       readFileSync(join(diagramsPath, dir, "metadata.yaml"), "utf8")
     );
+    console.log(metadata);
     const id = metadata.id;
-    const preview = readFileSync(
+    // copy the preview data to the dist folder
+    copyFileSync(
       join(diagramsPath, dir, "preview.png"),
-      "utf8"
+      join(distPath, `${id}.png`)
     );
-    writeFileSync(join(publicPath, `${id}.png`), preview);
-    return metadata;
+    return {
+      ...metadata,
+      previewURI: `diagrams/${id}.png`,
+    };
   });
 
 const diagramsJson = JSON.stringify(diagrams);
-writeFileSync(join(publicPath, "diagrams.json"), diagramsJson);
+writeFileSync(join(distPath, "diagrams.json"), diagramsJson);
