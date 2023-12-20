@@ -30,3 +30,8 @@ jobs:
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: ./dist/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./public/diagrams
