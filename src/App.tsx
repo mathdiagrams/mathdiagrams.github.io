@@ -8,7 +8,9 @@ function App() {
   const [diagrams, setDiagrams] = useState<Diagram[]>([]);
   useEffect(() => {
     async function fetchBundle() {
-      const response = await fetch("diagrams/diagrams.json");
+      const response = await fetch(
+        new URL("./diagrams/diagrams.json", import.meta.url).href
+      );
       const bundle = await response.json();
       setDiagrams([
         bundle[0],
