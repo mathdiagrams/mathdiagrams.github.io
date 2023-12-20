@@ -1,15 +1,39 @@
+import { useEffect, useState } from "react";
 import "./App.css";
+import Gallery from "./Gallery";
+import Search from "./Search";
+import { Diagram } from "./types";
 
 function App() {
+  const [diagrams, setDiagrams] = useState<Diagram[]>([]);
+  useEffect(() => {
+    async function fetchBundle() {
+      const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url)
+        .href;
+      const response = await fetch(bundleURL);
+      const bundle = await response.json();
+      setDiagrams([
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+        bundle[0],
+      ]);
+    }
+    fetchBundle();
+  }, []);
   return (
     <>
-      <h1>Math Diagrams</h1>
-      <div className="card">
-        <p>🚧 Coming soon!</p>
-      </div>
-      {/* <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
+      <h1 className="extra-bold">Math Diagrams</h1>
+      <p className="text-slate">
+        Your one-stop-shop for mathematical visualization.
+      </p>
+      <Search />
+      <Gallery diagrams={diagrams} />
     </>
   );
 }

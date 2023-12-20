@@ -1,0 +1,3 @@
+[submodule "diagrams"]
+	path = diagrams
+	url = https://github.com/mathdiagrams/diagrams.git

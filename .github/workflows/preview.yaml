@@ -12,17 +12,26 @@ concurrency: preview-${{ github.ref }}
 
 jobs:
   deploy-preview:
-    runs-on: ubuntu-20.04
+    permissions: write-all
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Install and Build
         run: |
           npm install
-          npm run build
+          npm run build-diagrams
+          npm run build -- --base pr-preview/pr-${{ github.event.pull_request.number }}/
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: ./build/
+          source-dir: ./dist/
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifacts
+          path: ./public/diagrams
