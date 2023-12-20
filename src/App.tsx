@@ -25,8 +25,7 @@ function App() {
       ]);
     }
     fetchBundle();
-  }),
-    [];
+  }, []);
   return (
     <>
       <h1 className="extra-bold">Math Diagrams</h1>
