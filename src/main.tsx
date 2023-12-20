@@ -30,29 +30,32 @@ const DiagramWrapper = () => {
   return <Diagram diagram={diagrams[+diagramID!]} />;
 };
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    // it renders this element
-    element: <DiagramWrapper />,
+const router = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: <Home />,
+    },
+    {
+      // it renders this element
+      element: <DiagramWrapper />,
 
-    // when the URL matches this segment
-    path: "diagrams/:diagramID",
+      // when the URL matches this segment
+      path: "diagrams/:diagramID",
 
-    // // with this data loaded before rendering
-    // loader: async ({ request, params }) => {
-    //   return fetch(`/fake/api/teams/${params.diagramId}.json`, {
-    //     signal: request.signal,
-    //   });
-    // },
-    errorElement: (
-      <h1 className="prose dark:prose-invert">Diagram not found</h1>
-    ),
-  },
-]);
+      // // with this data loaded before rendering
+      // loader: async ({ request, params }) => {
+      //   return fetch(`/fake/api/teams/${params.diagramId}.json`, {
+      //     signal: request.signal,
+      //   });
+      // },
+      errorElement: (
+        <h1 className="prose dark:prose-invert">Diagram not found</h1>
+      ),
+    },
+  ],
+  { basename: import.meta.env.BASE_URL }
+);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
