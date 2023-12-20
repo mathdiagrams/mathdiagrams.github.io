@@ -12,9 +12,9 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
           alt={diagram.title}
           loading="lazy"
         />
-        <Link to={"/"}>
-          <button className="dark:bg-slate-700 dark:hover:bg-slate-500 bg-gray-100 hover:bg-gray-200 text-white font-bold py-2 px-4 rounded">
-            <span className="prose text-xl dark:prose-invert">
+        <Link to={"/"} className="order-first md:order-none">
+          <button className="dark:bg-slate-700 dark:hover:bg-slate-500 bg-gray-100 hover:bg-gray-200 text-white font-bold py-1 px-2 md:py-2 md:px-4 rounded">
+            <span className="prose sm:text-sm md:text-xl dark:prose-invert">
               <svg className="inline-block w-4 h-6" viewBox="10 0 10 24">
                 <path
                   fill="currentColor"
