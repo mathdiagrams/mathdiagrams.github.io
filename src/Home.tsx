@@ -1,32 +1,10 @@
-import { useEffect, useState } from "react";
 import Gallery from "./Gallery";
 import Search from "./Search";
-import { Diagram } from "./types";
+import { diagrams } from "./main";
 
 function Home() {
-  const [diagrams, setDiagrams] = useState<Diagram[]>([]);
-  useEffect(() => {
-    async function fetchBundle() {
-      const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url)
-        .href;
-      const response = await fetch(bundleURL);
-      const bundle = await response.json();
-      setDiagrams([
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-        bundle[0],
-      ]);
-    }
-    fetchBundle();
-  }, []);
   return (
-    <>
+    <div className="container mx-auto flex flex-col justify-center items-center m-8">
       <h1 className="text-6xl font-bold leading-loose text-black dark:text-white">
         Math Diagrams
       </h1>
@@ -35,7 +13,7 @@ function Home() {
       </p>
       <Search />
       <Gallery diagrams={diagrams} />
-    </>
+    </div>
   );
 }
 
