@@ -37,4 +37,6 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
-          clean-exclude: pr-*/
+          clean-exclude: |
+            pr-preview/
+            CNAME
