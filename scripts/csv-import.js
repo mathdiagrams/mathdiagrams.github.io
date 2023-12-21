@@ -80,7 +80,6 @@ function toKebabCase(str) {
 
 // Process each row of the CSV
 function processRow(row, id) {
-  console.log(Object.keys(row));
   const title = row[Object.keys(row)[0]];
   const code = row["Code"];
   const notes = row["Notes"];
@@ -100,7 +99,7 @@ function processRow(row, id) {
     tools,
     notes,
     code,
-    previewURI,
+    previewURI: `${id}.webp`,
     originalFormat,
   };
 
