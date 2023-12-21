@@ -8,7 +8,7 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
     <div className="grid md:grid-cols-2 grid-cols-1 gap-8 p-8 h-screen">
       <div className="flex flex-col justify-center h-full gap-4">
         <img
-          className="rounded-md w-full object-contain shadow-md"
+          className="rounded-md w-full object-contain shadow-md bg-white"
           src={previewURL}
           alt={diagram.title}
           loading="lazy"

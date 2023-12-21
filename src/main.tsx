@@ -11,23 +11,16 @@ import Diagram from "./Diagram";
 import { DiagramData } from "./types";
 
 const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url).href;
-const bundle = await fetch(bundleURL).then((response) => response.json());
-
-export const diagrams: DiagramData[] = [
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-  bundle[0],
-];
+export const diagrams: DiagramData[] = await fetch(bundleURL).then((response) =>
+  response.json()
+);
 
 const DiagramWrapper = () => {
   const { diagramID } = useParams();
-  return <Diagram diagram={diagrams[+diagramID!]} />;
+
+  const diagram = diagrams.find(({ id }) => id === parseInt(diagramID!))!;
+
+  return <Diagram diagram={diagram} />;
 };
 
 const router = createBrowserRouter(
