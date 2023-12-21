@@ -1,3 +1,4 @@
+import Code from "./Code";
 import { DiagramData } from "./types";
 import { Link } from "react-router-dom";
 
@@ -42,8 +43,8 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
           ))}
         </div>
         <p className="prose pb-2 dark:prose-invert">{diagram.notes}</p>
-        <div className="bg-gray-100 prose dark:bg-gray-800 dark:prose-invert p-4 rounded-md font-mono text-sm whitespace-pre-wrap overflow-scroll h-4/5">
-          {diagram.code}
+        <div className="bg-gray-100 dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
+          <Code src={diagram.code} language="latex" />
         </div>
       </div>
     </div>

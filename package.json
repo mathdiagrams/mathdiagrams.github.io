@@ -37,6 +37,7 @@
     "pdf-lib": "^1.17.1",
     "pdf-to-png-converter": "^3.1.0",
     "postcss": "^8.4.32",
+    "shikiji": "^0.9.9",
     "sha": "^3.0.0",
     "svg2png": "^4.1.1",
     "tailwindcss": "^3.3.6",
