@@ -1,16 +1,50 @@
 import MarkdownIt from "markdown-it";
-import mk from "markdown-it-katex";
 import { Link } from "react-router-dom";
 import Code from "./Code";
 import { DiagramData } from "./types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import katex from "katex";
+import "katex/dist/katex.min.css"; // Import KaTeX styles
 
 // Initialize markdown-it with the katex plugin
 const md = new MarkdownIt({ linkify: true });
-md.use(mk);
+
+// Add a rule to handle math delimiters
+md.inline.ruler.after("escape", "math", (state, silent) => {
+  const startMathPos = state.pos;
+  if (state.src[startMathPos] !== "$") {
+    return false;
+  }
+
+  const endMathPos = state.src.indexOf("$", startMathPos + 1);
+  if (endMathPos === -1) {
+    return false;
+  }
+
+  if (!silent) {
+    const token = state.push("math", "", 0);
+    token.markup = state.src.slice(startMathPos, endMathPos + 1);
+    token.content = state.src.slice(startMathPos + 1, endMathPos);
+  }
+
+  state.pos = endMathPos + 1;
+  return true;
+});
+
+// Render the math expressions using katex
+md.renderer.rules.math = (tokens, idx) => {
+  try {
+    return katex.renderToString(tokens[idx].content);
+  } catch (e) {
+    console.error(e);
+    return tokens[idx].content;
+  }
+};
 
 export default function Diagram({ diagram }: { diagram: DiagramData }) {
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState(diagram.notes);
+  const notesRef = useRef();
 
   useEffect(() => {
     if (diagram.notes) {
@@ -61,6 +95,7 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
         </div>
         <div
           className="prose pb-2 dark:prose-invert"
+          ref={notesRef}
           dangerouslySetInnerHTML={{ __html: notes }}
         />
         <div className="bg-gray-100 dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
