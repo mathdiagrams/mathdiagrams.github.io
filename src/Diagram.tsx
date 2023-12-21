@@ -1,8 +1,23 @@
+import MarkdownIt from "markdown-it";
+import mk from "markdown-it-katex";
+import { Link } from "react-router-dom";
 import Code from "./Code";
 import { DiagramData } from "./types";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+// Initialize markdown-it with the katex plugin
+const md = new MarkdownIt();
+md.use(mk);
 
 export default function Diagram({ diagram }: { diagram: DiagramData }) {
+  const [notes, setNotes] = useState("");
+
+  useEffect(() => {
+    if (diagram.notes) {
+      setNotes(md.render(diagram.notes));
+    }
+  }, [diagram.notes]);
+
   const previewURL = import.meta.env.BASE_URL + diagram.previewURI;
   return (
     <div className="grid md:grid-cols-2 grid-cols-1 gap-8 p-8 h-screen">
@@ -42,7 +57,10 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
             </span>
           ))}
         </div>
-        <p className="prose pb-2 dark:prose-invert">{diagram.notes}</p>
+        <div
+          className="prose pb-2 dark:prose-invert"
+          dangerouslySetInnerHTML={{ __html: notes }}
+        />
         <div className="bg-gray-100 dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
           <Code src={diagram.code} language="latex" />
         </div>
