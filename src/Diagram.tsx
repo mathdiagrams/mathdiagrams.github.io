@@ -2,7 +2,7 @@ import MarkdownIt from "markdown-it";
 import { Link } from "react-router-dom";
 import Code from "./Code";
 import { DiagramData } from "./types";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import katex from "katex";
 import "katex/dist/katex.min.css"; // Import KaTeX styles
