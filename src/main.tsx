@@ -34,7 +34,7 @@ const router = createBrowserRouter(
       element: <DiagramWrapper />,
 
       // when the URL matches this segment
-      path: "diagrams/:diagramID",
+      path: "/diagrams/:diagramID",
 
       // // with this data loaded before rendering
       // loader: async ({ request, params }) => {
