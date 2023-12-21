@@ -6,7 +6,7 @@ import { DiagramData } from "./types";
 import { useEffect, useState } from "react";
 
 // Initialize markdown-it with the katex plugin
-const md = new MarkdownIt();
+const md = new MarkdownIt({ linkify: true });
 md.use(mk);
 
 export default function Diagram({ diagram }: { diagram: DiagramData }) {
@@ -46,7 +46,9 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
         <h1 className="text-black text-4xl pb-2 dark:text-white">
           {diagram.title}
         </h1>
-        <h2 className="inline font-light italic">{diagram.author}</h2>
+        <h2 className="prose dark:prose-invert font-light italic">
+          {diagram.author}
+        </h2>
         <div className="pb-2">
           {diagram.domains.map((domain) => (
             <span
