@@ -25,18 +25,17 @@ const diagrams = readdirSync(diagramsPath)
   })
   .map((dir) => {
     const metadata = load(
-      readFileSync(join(diagramsPath, dir, "metadata.yaml"), "utf8")
+      readFileSync(join(diagramsPath, dir, "data.yaml"), "utf8")
     );
-    console.log(metadata);
     const id = metadata.id;
     // copy the preview data to the dist folder
     copyFileSync(
-      join(diagramsPath, dir, "preview.png"),
-      join(distPath, `${id}.png`)
+      join(diagramsPath, dir, `${id}.webp`),
+      join(distPath, `${id}.webp`)
     );
     return {
       ...metadata,
-      previewURI: `diagrams/${id}.png`,
+      previewURI: `diagrams/${id}.webp`,
     };
   });
 

@@ -1,5 +1,5 @@
 export type DiagramData = {
-  id: string;
+  id: number;
   title: string;
   author: string;
   code: string;
