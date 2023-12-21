@@ -44,7 +44,6 @@ md.renderer.rules.math = (tokens, idx) => {
 
 export default function Diagram({ diagram }: { diagram: DiagramData }) {
   const [notes, setNotes] = useState(diagram.notes);
-  const notesRef = useRef();
 
   useEffect(() => {
     if (diagram.notes) {
@@ -95,7 +94,6 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
         </div>
         <div
           className="prose pb-2 dark:prose-invert"
-          ref={notesRef}
           dangerouslySetInnerHTML={{ __html: notes }}
         />
         <div className="bg-gray-100 dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
