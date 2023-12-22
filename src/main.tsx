@@ -9,6 +9,7 @@ import "./index.css";
 import Home from "./Home";
 import Diagram from "./Diagram";
 import { DiagramData } from "./types";
+import NotFound from "./NotFound";
 
 const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url).href;
 export const diagrams: DiagramData[] = await fetch(bundleURL).then((response) =>
@@ -42,9 +43,7 @@ const router = createBrowserRouter(
       //     signal: request.signal,
       //   });
       // },
-      errorElement: (
-        <h1 className="prose dark:prose-invert">Diagram not found</h1>
-      ),
+      errorElement: <NotFound />,
     },
   ],
   { basename: import.meta.env.BASE_URL }

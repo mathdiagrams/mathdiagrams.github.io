@@ -28,8 +28,8 @@ export default function Code({
       const code = highlighter.codeToHtml(src, {
         lang: language,
         themes: {
-          light: "one-dark-pro",
-          dark: "vitesse-light",
+          dark: "one-dark-pro",
+          light: "vitesse-light",
         },
       });
       setRendered(code);
