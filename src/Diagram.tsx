@@ -96,7 +96,7 @@ export default function Diagram({ diagram }: { diagram: DiagramData }) {
           className="prose pb-2 dark:prose-invert"
           dangerouslySetInnerHTML={{ __html: notes }}
         />
-        <div className="bg-gray-100 dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
+        <div className="bg-white shadow-md dark:shadow-none dark:bg-[#282c34] p-4 rounded-md whitespace-pre-wrap overflow-scroll h-4/5">
           <Code src={diagram.code} language="latex" />
         </div>
       </div>
