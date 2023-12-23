@@ -1,11 +1,17 @@
-import React from "react";
+import { useState } from "react";
 import Gallery from "./Gallery";
 import Header from "./Header";
 import Search from "./Search";
-import { allDiagrams, miniSearch } from "./main";
+import { allDiagrams, allDomains, miniSearch, uniqueDomains } from "./main";
+import Domains from "./Domains";
 
-function Home() {
-  const [diagrams, setDiagrams] = React.useState(allDiagrams);
+function Home({ domainColors }: { domainColors: Map<string, string> }) {
+  // diagrams displayed in the gallery
+  const [diagrams, setDiagrams] = useState(allDiagrams);
+  // diagrams matching the search query
+  const [matches, setMatches] = useState(allDiagrams);
+  const [domains, setDomains] = useState(allDomains);
+
   return (
     <div className="container mx-auto flex flex-col justify-center items-center m-8">
       <Header />
@@ -14,8 +20,11 @@ function Home() {
         onFound={(res) => {
           const indices = res.map(({ id }) => id);
           // if no results, default to all
-          if (res.length === 0) setDiagrams(allDiagrams);
-          else {
+          if (res.length === 0) {
+            setDiagrams(allDiagrams);
+            setMatches(allDiagrams);
+            setDomains(allDomains);
+          } else {
             const filtered = allDiagrams.filter(({ id }) =>
               indices.includes(id)
             );
@@ -24,8 +33,20 @@ function Home() {
                 res.find(({ id }) => b.id === id)!.score -
                 res.find(({ id }) => a.id === id)!.score
             );
+            setDomains(uniqueDomains(ranked));
             setDiagrams(ranked);
+            setMatches(ranked);
           }
+        }}
+      />
+      <Domains
+        domains={domains}
+        colors={domainColors}
+        onSelect={(domains) => {
+          const filtered = matches.filter(({ domains: d }) =>
+            d.every((domain) => domains.includes(domain))
+          );
+          setDiagrams(filtered);
         }}
       />
       <Gallery diagrams={diagrams} />
