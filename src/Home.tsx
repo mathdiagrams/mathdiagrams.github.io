@@ -6,7 +6,10 @@ import { allDiagrams, allDomains, miniSearch, uniqueDomains } from "./main";
 import Domains from "./Domains";
 
 function Home({ domainColors }: { domainColors: Map<string, string> }) {
+  // diagrams displayed in the gallery
   const [diagrams, setDiagrams] = useState(allDiagrams);
+  // diagrams matching the search query
+  const [matches, setMatches] = useState(allDiagrams);
   const [domains, setDomains] = useState(allDomains);
 
   return (
@@ -19,6 +22,7 @@ function Home({ domainColors }: { domainColors: Map<string, string> }) {
           // if no results, default to all
           if (res.length === 0) {
             setDiagrams(allDiagrams);
+            setMatches(allDiagrams);
             setDomains(allDomains);
           } else {
             const filtered = allDiagrams.filter(({ id }) =>
@@ -29,8 +33,9 @@ function Home({ domainColors }: { domainColors: Map<string, string> }) {
                 res.find(({ id }) => b.id === id)!.score -
                 res.find(({ id }) => a.id === id)!.score
             );
-            setDomains(uniqueDomains(filtered));
+            setDomains(uniqueDomains(ranked));
             setDiagrams(ranked);
+            setMatches(ranked);
           }
         }}
       />
@@ -38,8 +43,8 @@ function Home({ domainColors }: { domainColors: Map<string, string> }) {
         domains={domains}
         colors={domainColors}
         onSelect={(domains) => {
-          const filtered = allDiagrams.filter(({ domains: d }) =>
-            d.some((domain) => domains.includes(domain))
+          const filtered = matches.filter(({ domains: d }) =>
+            d.every((domain) => domains.includes(domain))
           );
           setDiagrams(filtered);
         }}
