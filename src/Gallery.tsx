@@ -7,18 +7,21 @@ export default function Gallery({ diagrams }: { diagrams: DiagramData[] }) {
       {diagrams.map((diagram) => {
         const previewURL = import.meta.env.BASE_URL + diagram.previewURI;
         return (
-          <Link to={`/diagrams/${diagram.id}`}>
+          <Link key={`link-to-${diagram.id}`} to={`/diagrams/${diagram.id}`}>
             <div
-              key={diagram.id}
+              key={`card-${diagram.id}`}
               className="rounded-md bg-white p-4 shadow-md hover:shadow-lg focus:ring"
             >
               <img
+                key={`preview-${diagram.id}`}
                 className="w-full h-60  object-center object-cover"
                 src={previewURL}
                 alt={diagram.title}
                 loading="lazy"
               />
-              <h2 className="font-bold text-black">{diagram.title}</h2>
+              <h2 key={`title-${diagram.id}`} className="font-bold text-black">
+                {diagram.title}
+              </h2>
             </div>
           </Link>
         );

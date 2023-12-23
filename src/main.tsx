@@ -10,16 +10,27 @@ import Home from "./Home";
 import Diagram from "./Diagram";
 import { DiagramData } from "./types";
 import NotFound from "./NotFound";
+import MiniSearch from "minisearch";
 
+// HACK: load the diagrams.json file from the public folder on startup and build a search index.
+// NOTE: in production, this should be done as a build step and the index should be loaded from a static file.
 const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url).href;
-export const diagrams: DiagramData[] = await fetch(bundleURL).then((response) =>
-  response.json()
+export const allDiagrams: DiagramData[] = await fetch(bundleURL).then(
+  (response) => response.json()
 );
+export const miniSearch = new MiniSearch({
+  fields: ["title", "notes", "code", "author", "domains"], // fields to index for full-text search
+  storeFields: ["title", "id"], // fields to return with search results
+});
+
+// Index all documents
+miniSearch.addAll(allDiagrams);
+console.log(miniSearch.search("diagram"));
 
 const DiagramWrapper = () => {
   const { diagramID } = useParams();
 
-  const diagram = diagrams.find(({ id }) => id === parseInt(diagramID!))!;
+  const diagram = allDiagrams.find(({ id }) => id === parseInt(diagramID!))!;
 
   return <Diagram diagram={diagram} />;
 };
