@@ -2,6 +2,7 @@ import Minisearch from "minisearch"; // Import the Minisearch type using default
 
 export type Match = {
   id: number;
+  score: number;
 };
 
 export default function Search({
@@ -14,6 +15,7 @@ export default function Search({
   const search = (event: React.ChangeEvent<HTMLInputElement>) => {
     const res = index.search(event.target.value, { fuzzy: 0.2 });
     onFound(res);
+    console.log(res);
   };
 
   return (

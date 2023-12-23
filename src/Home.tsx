@@ -16,7 +16,15 @@ function Home() {
           // if no results, default to all
           if (res.length === 0) setDiagrams(allDiagrams);
           else {
-            setDiagrams(allDiagrams.filter(({ id }) => indices.includes(id)));
+            const filtered = allDiagrams.filter(({ id }) =>
+              indices.includes(id)
+            );
+            const ranked = filtered.sort(
+              (a, b) =>
+                res.find(({ id }) => b.id === id)!.score -
+                res.find(({ id }) => a.id === id)!.score
+            );
+            setDiagrams(ranked);
           }
         }}
       />
