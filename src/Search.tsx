@@ -15,7 +15,6 @@ export default function Search({
   const search = (event: React.ChangeEvent<HTMLInputElement>) => {
     const res = index.search(event.target.value, { fuzzy: 0.2 });
     onFound(res);
-    console.log(res);
   };
 
   return (

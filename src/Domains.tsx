@@ -45,6 +45,21 @@ export default function Domains({
           {domain}
         </span>
       ))}
+      <span
+        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-s font-medium text-gray-600 cursor-pointer shadow-md dark:shadow-none select-none
+				bg-none dark:border-gray-300 border-s-2 border dark:text-gray-100"
+        onClick={() => {
+          if (selected.length === 0) {
+            setSelected(domains);
+            onSelect(domains);
+          } else {
+            setSelected([]);
+            onSelect([]);
+          }
+        }}
+      >
+        {selected.length === 0 ? "Select All" : "Deselect All"}
+      </span>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import {
 import "./index.css";
 import Home from "./Home";
 import Diagram from "./Diagram";
-import { DiagramData } from "./types";
+import { DiagramData, DiagramMetaData } from "./types";
 import NotFound from "./NotFound";
 import MiniSearch from "minisearch";
 import randomColor from "randomcolor";
@@ -19,18 +19,25 @@ const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url).href;
 export const allDiagrams: DiagramData[] = await fetch(bundleURL).then(
   (response) => response.json()
 );
-// return a unique list of all domains
-export const uniqueDomains = (diagrams: DiagramData[]): string[] =>
-  Array.from(new Set(diagrams.map(({ domains }) => domains).flat()));
-export const allDomains: string[] = uniqueDomains(allDiagrams);
 
-export const miniSearch = new MiniSearch({
+// load diagram metadata
+const metaURL = new URL("/diagrams/metadata.json", import.meta.url).href;
+export const metaData: DiagramMetaData = await fetch(metaURL).then((response) =>
+  response.json()
+);
+
+// return a unique list of all domains
+export const allDomains: string[] = metaData.domains;
+
+// load search index
+const indexURL = new URL("/diagrams/search.json", import.meta.url).href;
+export const searchIndex = await fetch(indexURL).then((response) =>
+  response.text()
+);
+export const miniSearch = MiniSearch.loadJSON(searchIndex, {
   fields: ["title", "notes", "code", "author", "domains"], // fields to index for full-text search
   storeFields: ["title", "id"], // fields to return with search results
 });
-
-// Index all documents
-miniSearch.addAll(allDiagrams);
 
 // generate a random color for each domain
 

@@ -2,8 +2,12 @@ import { useState } from "react";
 import Gallery from "./Gallery";
 import Header from "./Header";
 import Search from "./Search";
-import { allDiagrams, allDomains, miniSearch, uniqueDomains } from "./main";
+import { allDiagrams, allDomains, miniSearch } from "./main";
 import Domains from "./Domains";
+import { DiagramData } from "./types";
+
+const uniqueDomains = (diagrams: DiagramData[]): string[] =>
+  Array.from(new Set(diagrams.map(({ domains }) => domains).flat()));
 
 function Home({ domainColors }: { domainColors: Map<string, string> }) {
   // diagrams displayed in the gallery

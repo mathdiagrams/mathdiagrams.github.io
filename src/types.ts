@@ -7,3 +7,9 @@ export type DiagramData = {
   previewURI: string;
   domains: string[];
 };
+
+export type DiagramMetaData = {
+  count: number;
+  ids: number[];
+  domains: string[];
+};
