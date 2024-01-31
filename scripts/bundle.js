@@ -35,10 +35,12 @@ const diagrams = readdirSync(diagramsPath)
       join(diagramsPath, dir, `${id}.webp`),
       join(distPath, `${id}.webp`)
     );
-    return {
+    const data = {
       ...metadata,
       previewURI: `diagrams/${id}.webp`,
     };
+    writeFileSync(join(distPath, `${id}.json`), JSON.stringify(data));
+    return data;
   });
 
 const diagramsJson = JSON.stringify(diagrams);
@@ -55,10 +57,14 @@ const searchIndexJSON = JSON.stringify(miniSearch.toJSON());
 // return a unique list of all domains
 const uniqueDomains = (diagrams) =>
   Array.from(new Set(diagrams.map(({ domains }) => domains).flat()));
+const uniqueTools = (diagrams) =>
+  Array.from(new Set(diagrams.map(({ tools }) => tools).flat()));
+
 const metadata = {
   ids: diagrams.map(({ id }) => id),
   count: diagrams.length,
   domains: uniqueDomains(diagrams),
+  tools: uniqueTools(diagrams),
 };
 
 writeFileSync(join(distPath, "diagrams.json"), diagramsJson);

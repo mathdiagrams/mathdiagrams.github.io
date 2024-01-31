@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
   RouterProvider,
-  useParams,
+  useLoaderData,
 } from "react-router-dom";
 import "./index.css";
 import Home from "./Home";
@@ -12,13 +12,6 @@ import { DiagramData, DiagramMetaData } from "./types";
 import NotFound from "./NotFound";
 import MiniSearch from "minisearch";
 import randomColor from "randomcolor";
-
-// HACK: load the diagrams.json file from the public folder on startup and build a search index.
-// NOTE: in production, this should be done as a build step and the index should be loaded from a static file.
-const bundleURL = new URL("/diagrams/diagrams.json", import.meta.url).href;
-export const allDiagrams: DiagramData[] = await fetch(bundleURL).then(
-  (response) => response.json()
-);
 
 // load diagram metadata
 const metaURL = new URL("/diagrams/metadata.json", import.meta.url).href;
@@ -52,9 +45,9 @@ const colorMap = allDomains.reduce((acc, domain, i) => {
 }, new Map<string, string>());
 
 const DiagramWrapper = () => {
-  const { diagramID } = useParams();
-
-  const diagram = allDiagrams.find(({ id }) => id === parseInt(diagramID!))!;
+  // TODO: fix types
+  const diagram: DiagramData = useLoaderData() as DiagramData;
+  console.log(diagram);
 
   return <Diagram diagram={diagram} />;
 };
@@ -72,12 +65,12 @@ const router = createBrowserRouter(
       // when the URL matches this segment
       path: "diagrams/:diagramID",
 
-      // // with this data loaded before rendering
-      // loader: async ({ request, params }) => {
-      //   return fetch(`/fake/api/teams/${params.diagramId}.json`, {
-      //     signal: request.signal,
-      //   });
-      // },
+      // with this data loaded before rendering
+      loader: async ({ request, params }): Promise<DiagramData> => {
+        return fetch(`/diagrams/${params.diagramID}.json`, {
+          signal: request.signal,
+        }).then((response) => response.json());
+      },
       errorElement: <NotFound />,
     },
   ],
