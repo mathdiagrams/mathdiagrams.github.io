@@ -39,11 +39,9 @@ function Home({ domainColors }: { domainColors: Map<string, string> }) {
   useEffect(() => {
     // fetch all diagrams in `diagram`, if it's not already in `diagramData`
     if (matches.length > 0) {
-      console.log(diagramData);
-
       const missing = matches.filter((id) => !diagramData.has(id));
       if (missing.length > 0) {
-        console.log("Fetching missing diagrams", missing);
+        // console.log("Fetching missing diagrams", missing);
         const fetchDiagrams = async (ids: number[]) => {
           const diagrams: DiagramData[] = [];
           for (const id of ids) {
