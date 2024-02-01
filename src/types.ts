@@ -12,4 +12,5 @@ export type DiagramMetaData = {
   count: number;
   ids: number[];
   domains: string[];
+  titles: { [id: number]: string };
 };

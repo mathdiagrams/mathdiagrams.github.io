@@ -23,10 +23,9 @@ export const metaData: DiagramMetaData = await fetch(metaURL).then((response) =>
 export const allDomains: string[] = metaData.domains;
 
 // load search index
-const indexURL = new URL("/diagrams/search.json", import.meta.url).href;
-export const searchIndex = await fetch(indexURL).then((response) =>
-  response.text()
-);
+const indexURL = new URL("/diagrams/search.json.gz", import.meta.url).href;
+const searchIndex = await fetch(indexURL).then((response) => response.text());
+// decompress search index
 export const miniSearch = MiniSearch.loadJSON(searchIndex, {
   fields: ["title", "notes", "code", "author", "domains"], // fields to index for full-text search
   storeFields: ["title", "id"], // fields to return with search results
